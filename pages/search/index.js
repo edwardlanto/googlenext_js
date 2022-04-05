@@ -2,11 +2,15 @@ import React from "react";
 import Link from 'next/link';
 import SearchBar from "../../components/SearchBar";
 import styles from "./search.module.css";
-import { searchItemsSelector, searchQuerySelector, searchInformationSelector } from 'features/searchSlice/selectors';
+import { searchItemsSelector, searchInformationSelector, searchErrorSelector } from 'features/searchSlice/selectors';
+import {
+  useAppSelector,
+} from 'store/hooks';
 
 const SearchPage = () => {
   const items = useAppSelector(searchItemsSelector);
   const searchInformation = useAppSelector(searchInformationSelector);
+  const error = useAppSelector(searchErrorSelector);
   const handleError = (src, index) => {
 
     // Error handle all broken images
@@ -39,8 +43,7 @@ const SearchPage = () => {
           About {searchInformation.formattedTotalResults} results (
           {searchInformation.formattedSearchTime} seconds)
         </p>
-
-        {items.length ? items.map((item, index) => {
+        {error ? <div>{error}</div> : items?.length ? items.map((item, index) => {
           return (
             item.pagemap?.cse_image?.[0] && (
               <div className={styles.searchPage__result} key={index}>
@@ -62,7 +65,7 @@ const SearchPage = () => {
               </div>
             )
           );
-        }) : <div>No Results</div>}
+        }) : <div><p>No Results, please try another search term.</p></div>}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import { Button } from "@material-ui/core";
 import styles from "./SearchBar.module.css";
@@ -7,15 +7,13 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../store/hooks';
-import { useSelector } from 'react-redux';
 import { getSearch, setQuery } from 'features/searchSlice';
 import { searchQuerySelector } from 'features/searchSlice/selectors'
-import { useRouter } from 'next/router'
 
 const Search = ({ hideButtons = false }) => {
   const dispatch = useAppDispatch();
   const query = useAppSelector(searchQuerySelector);
-  
+
   useEffect(() => {
     const url = new URL(window.location.href);
     const term = url.searchParams.get("term");
@@ -23,8 +21,7 @@ const Search = ({ hideButtons = false }) => {
       dispatch(setQuery(term))
       dispatch(getSearch(term))
     }
-  }, [])
-
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();

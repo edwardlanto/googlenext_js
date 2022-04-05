@@ -41,6 +41,7 @@
 .home__body  img{
     object-fit:contain;
     height:100px;
+    margin: 20vh 0 40px 0 ;
 }
 
 .home__body a{
@@ -52,3 +53,4 @@
     margin-top:10px;
     flex-direction:column;
 }
+

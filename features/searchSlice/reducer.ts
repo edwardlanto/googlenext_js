@@ -12,7 +12,7 @@ export type SearchState = {
     items: any[],
     query: any,
     pending: boolean;
-    error: boolean;
+    error: any,
     searchInformation: ISearchInformation | null
 };
 
@@ -31,7 +31,7 @@ const initialState: SearchState = {
 
 export const searchReducer = createReducer(initialState, builder => {
     builder
-        .addCase(getSearch.pending, (state, action) => {
+        .addCase(getSearch.pending, (state) => {
             state.pending = true;
         })
         .addCase(getSearch.fulfilled, (state, action) => {
@@ -39,9 +39,10 @@ export const searchReducer = createReducer(initialState, builder => {
             state.items = action.payload.items;
             state.searchInformation = action.payload.searchInformation;
         })
-        .addCase(getSearch.rejected, state => {
+        .addCase(getSearch.rejected, (state, { error })=> {
             state.pending = false;
-            state.error = true;
+            console.log(error);
+            state.error = error.message
         })
         .addCase(setQuery, (state, action) => {
             state.query = action.payload;
