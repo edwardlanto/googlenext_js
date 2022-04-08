@@ -46,7 +46,7 @@ const SearchPage = () => {
         {error ? <div>{error}</div> : items?.length ? items.map((item, index) => {
           return (
             item.pagemap?.cse_image?.[0] && (
-              <div className={styles.searchPage__result} key={index}>
+              <div className={styles.searchPage__result} key={index} data-cy="search__result">
                 <a href={item.link}>
                   <img
                     src={item.pagemap.cse_image?.[0]?.src}

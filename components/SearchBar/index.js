@@ -8,7 +8,8 @@ import {
   useAppSelector,
 } from '../../store/hooks';
 import { getSearch, setQuery } from 'features/searchSlice';
-import { searchQuerySelector } from 'features/searchSlice/selectors'
+import { searchQuerySelector } from 'features/searchSlice/selectors';
+import axios from 'axios';
 
 const Search = ({ hideButtons = false }) => {
   const dispatch = useAppDispatch();
@@ -29,17 +30,29 @@ const Search = ({ hideButtons = false }) => {
     Router.push(`/search?term=${query}`);
   };
 
+  const onSubmitLucky = async (e) => {
+    try{
+      const linkPromise = await axios(`https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_API_KEY}&cx=${process.env.REACT_APP_CONTEXT_KEY}&q=${query}
+      `);
+      const windowLocation = linkPromise.data.items[0].formattedUrl;
+      return window.open(windowLocation, '_blank');
+    }catch(e){
+      return alert('Could not find link. Please try another query,');
+    }
+
+  }
+
   return (
     <form className={styles.search} onSubmit={(e) => onSubmit(e)}>
       <div className={styles.search__input}>
         <SearchIcon className={styles.search__inputIcon} />
-        <input value={query} onChange={(e) => dispatch(setQuery(e.target.value))}/>
+        <input value={query} onChange={(e) => dispatch(setQuery(e.target.value))} data-cy="search__input"/>
       </div>
 
       {!hideButtons ? (
         <div className={styles.search__buttons}>
-          <Button onClick={onSubmit}>Google Search</Button>
-          <Button onClick={() => onSearch(true)}>I'm Feeling Lucky</Button>
+          <Button onClick={onSubmit} data-cy="search__submit" type="button">Google Search</Button>
+          <Button onClick={(e) => onSubmitLucky(e)} data-cy="search__submitLucky" type="button">I'm Feeling Lucky</Button>
         </div>
       ) : (
         <div></div>
