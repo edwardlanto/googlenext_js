@@ -18,35 +18,37 @@ const Search = ({ hideButtons = false }) => {
   useEffect(() => {
     const url = new URL(window.location.href);
     const term = url.searchParams.get("term");
-    if(term){
+    if (term) {
       dispatch(setQuery(term))
       dispatch(getSearch(term))
     }
   }, []);
 
   const onSubmit = (e) => {
-    e.preventDefault();
-    dispatch(getSearch(query));
-    Router.push(`/search?term=${query}`);
+    if (query) {
+      e.preventDefault();
+      dispatch(getSearch(query));
+      Router.push(`/search?term=${query}`);
+    }
   };
 
   const onSubmitLucky = async (e) => {
-    try{
-      const linkPromise = await axios(`https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_API_KEY}&cx=${process.env.REACT_APP_CONTEXT_KEY}&q=${query}
-      `);
-      const windowLocation = linkPromise.data.items[0].formattedUrl;
-      return window.open(windowLocation, '_blank');
-    }catch(e){
-      return alert('Could not find link. Please try another query,');
+    if (query) {
+      try {
+        const linkPromise = await axios(`https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_API_KEY}&cx=${process.env.REACT_APP_CONTEXT_KEY}&q=${query}`);
+        const windowLocation = linkPromise.data.items[0].formattedUrl;
+        return window.open(windowLocation, '_blank');
+      } catch (e) {
+        return alert('Could not find link. Please try another query,');
+      }
     }
-
   }
 
   return (
     <form className={styles.search} onSubmit={(e) => onSubmit(e)}>
       <div className={styles.search__input}>
         <SearchIcon className={styles.search__inputIcon} />
-        <input value={query} onChange={(e) => dispatch(setQuery(e.target.value))} data-cy="search__input"/>
+        <input value={query} onChange={(e) => dispatch(setQuery(e.target.value))} data-cy="search__input" />
       </div>
 
       {!hideButtons ? (

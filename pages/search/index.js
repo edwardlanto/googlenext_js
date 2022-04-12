@@ -38,35 +38,39 @@ const SearchPage = () => {
           <SearchBar hideButtons />
         </div>
       </div>
-      <div className={styles.searchPage__results}>
-        <p className={styles.searchPage__resultCount}>
-          About {searchInformation.formattedTotalResults} results (
-          {searchInformation.formattedSearchTime} seconds)
-        </p>
-        {error ? <div>{error}</div> : items?.length ? items.map((item, index) => {
-          return (
-            item.pagemap?.cse_image?.[0] && (
-              <div className={styles.searchPage__result} key={index} data-cy="search__result">
-                <a href={item.link}>
-                  <img
-                    src={item.pagemap.cse_image?.[0]?.src}
-                    className={styles.searchPage__resultImage}
-                    alt={`result thumbnail`}
-                    onError={() =>
-                      handleError(item.pagemap.cse_image?.[0].src, index)
-                    }
-                  />
-                </a>
-                <a href={item.link}>{item.displayLink}</a>
-                <a href={item.link} className={styles.searchPage__resultTitle}>
-                  <h2>{item.title}</h2>
-                </a>
-                <p className={styles.searchPage__resultSnippet}>{item.snippet}</p>
-              </div>
-            )
-          );
-        }) : <div><p>No Results, please try another search term.</p></div>}
-      </div>
+      {pending == true ? (
+        <div></div>
+      ) : (
+
+        <div className={styles.searchPage__results}>
+          <p className={styles.searchPage__resultCount}>
+            About {searchInformation.formattedTotalResults} results (
+            {searchInformation.formattedSearchTime} seconds)
+          </p>
+          {error ? <div>{error}</div> : items?.length ? items.map((item, index) => {
+            return (
+              item.pagemap?.cse_image?.[0] && (
+                <div className={styles.searchPage__result} key={index} data-cy="search__result">
+                  <a href={item.link}>
+                    <img
+                      src={item.pagemap.cse_image?.[0]?.src}
+                      className={styles.searchPage__resultImage}
+                      alt={`result thumbnail`}
+                      onError={() =>
+                        handleError(item.pagemap.cse_image?.[0].src, index)
+                      }
+                    />
+                  </a>
+                  <a href={item.link}>{item.displayLink}</a>
+                  <a href={item.link} className={styles.searchPage__resultTitle}>
+                    <h2>{item.title}</h2>
+                  </a>
+                  <p className={styles.searchPage__resultSnippet}>{item.snippet}</p>
+                </div>
+              )
+            );
+          }) : <div><p>No Results, please try another search term.</p></div>}
+        </div>)}
     </div>
   );
 }
