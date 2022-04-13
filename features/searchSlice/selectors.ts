@@ -23,3 +23,8 @@ export const searchErrorSelector = createSelector(
   state => state.error
 );
 
+export const pendingErrorSelector = createSelector(
+  selectSearch,
+  state => state.pending
+);
+

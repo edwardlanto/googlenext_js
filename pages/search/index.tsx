@@ -2,7 +2,7 @@ import React from "react";
 import Link from 'next/link';
 import SearchBar from "../../components/SearchBar";
 import styles from "./search.module.css";
-import { searchItemsSelector, searchInformationSelector, searchErrorSelector } from 'features/searchSlice/selectors';
+import { searchItemsSelector, searchInformationSelector, searchErrorSelector, pendingErrorSelector } from 'features/searchSlice/selectors';
 import {
   useAppSelector,
 } from 'store/hooks';
@@ -11,18 +11,7 @@ const SearchPage = () => {
   const items = useAppSelector(searchItemsSelector);
   const searchInformation = useAppSelector(searchInformationSelector);
   const error = useAppSelector(searchErrorSelector);
-  const handleError = (src, index) => {
-
-    // Error handle all broken images
-    const errorImages = document.getElementsByClassName(
-      `searchPage__resultImage`
-    );
-
-    // Access HTML Collection
-    if (errorImages.item(index)) {
-      errorImages.item(index).style.display = "none";
-    }
-  };
+  const pending = useAppSelector(pendingErrorSelector);
 
   return (
     <div className={styles.searchPage}>
@@ -34,7 +23,7 @@ const SearchPage = () => {
             className={styles.searchPage__logo}
           />
         </Link>
-        <div className={styles.searchPage__logo}>
+        <div>
           <SearchBar hideButtons />
         </div>
       </div>
@@ -50,15 +39,17 @@ const SearchPage = () => {
           {error ? <div>{error}</div> : items?.length ? items.map((item, index) => {
             return (
               item.pagemap?.cse_image?.[0] && (
-                <div className={styles.searchPage__result} key={index} data-cy="search__result">
+                <div className={`${styles.searchPage__result}`}  key={index} data-cy="search__result">
                   <a href={item.link}>
                     <img
                       src={item.pagemap.cse_image?.[0]?.src}
-                      className={styles.searchPage__resultImage}
+                      id={item.pagemap.cse_image?.[0]?.src.toLowerCase()}
+                      className={` ${styles.searchPage__resultImage} searchPage__img` }
                       alt={`result thumbnail`}
-                      onError={() =>
-                        handleError(item.pagemap.cse_image?.[0].src, index)
-                      }
+                      onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;
+                        currentTarget.style.display = "none"
+                      }}
                     />
                   </a>
                   <a href={item.link}>{item.displayLink}</a>

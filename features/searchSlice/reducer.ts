@@ -2,24 +2,24 @@ import { createReducer, PayloadAction } from '@reduxjs/toolkit';
 import { getSearch, setQuery } from './actions';
 
 interface ISearchInformation{
-    "searchTime": number,
-    "formattedSearchTime": number,
-    "totalResults": Number,
-    "formattedTotalResults": number
+    "searchTime": number;
+    "formattedSearchTime": number;
+    "totalResults": Number;
+    "formattedTotalResults": number;
 }
 
 export type SearchState = {
-    items: any[],
-    query: any,
+    items: any[];
+    query: any;
     pending: boolean;
-    error: any,
-    searchInformation: ISearchInformation | null
+    error: any;
+    searchInformation: ISearchInformation | null;
 };
 
 const initialState: SearchState = {
-    items: [],
+    items: null,
     query: "",
-    pending: false,
+    pending: true,
     error: false,
     searchInformation: {
         searchTime: 0,
@@ -41,8 +41,7 @@ export const searchReducer = createReducer(initialState, builder => {
         })
         .addCase(getSearch.rejected, (state, { error })=> {
             state.pending = false;
-            console.log(error);
-            state.error = error.message
+            state.error = error.message;
         })
         .addCase(setQuery, (state, action) => {
             state.query = action.payload;

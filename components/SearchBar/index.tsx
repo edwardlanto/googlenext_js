@@ -45,21 +45,20 @@ const Search = ({ hideButtons = false }) => {
   }
 
   return (
-    <form className={styles.search} onSubmit={(e) => onSubmit(e)}>
-      <div className={styles.search__input}>
-        <SearchIcon className={styles.search__inputIcon} />
-        <input value={query} onChange={(e) => dispatch(setQuery(e.target.value))} data-cy="search__input" />
-      </div>
-
-      {!hideButtons ? (
-        <div className={styles.search__buttons}>
-          <Button onClick={onSubmit} data-cy="search__submit" type="button">Google Search</Button>
-          <Button onClick={(e) => onSubmitLucky(e)} data-cy="search__submitLucky" type="button">I'm Feeling Lucky</Button>
+      <form className={styles.search} onSubmit={(e) => onSubmit(e)}>
+        <div className={styles.search__input}>
+          <SearchIcon className={styles.search__inputIcon} />
+          <input value={query} onChange={(e) => dispatch(setQuery(e.target.value))} data-cy="search__input" />
         </div>
-      ) : (
-        <div></div>
-      )}
-    </form>
+        {!hideButtons ? (
+          <div className={styles.search__buttons}>
+            <Button onClick={onSubmit} data-cy="search__submit" type="button">Google Search</Button>
+            <Button onClick={(e) => onSubmitLucky(e)} data-cy="search__submitLucky" type="button">I'm Feeling Lucky</Button>
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </form>
   );
 }
 

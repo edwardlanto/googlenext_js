@@ -10,7 +10,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false ,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -21,6 +21,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "cypress/integration/3-home/home.spec.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "cypress/integration/3-home/home.spec.js", "pages/index.js", "store/hooks.js", "pages/index.js", "pages/_app.js", "pages/search/index.js"],
   "exclude": ["node_modules"]
 }
